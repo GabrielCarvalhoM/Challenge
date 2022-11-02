@@ -9,6 +9,8 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
+    var api = Api()
+    
     
        lazy var backGroundImage: UIImageView = {
            
@@ -160,13 +162,17 @@ class LoginViewController: UIViewController {
         view.addSubview(stayLogSwitch)
         view.addSubview(loginButton)
         view.addSubview(passRemenber)
-        
+
         MakeConstraints()
     }
     
     @objc private func didTapLoginButton() {
         
-        if isValidateLoginFields() {
+        let userData = isValidateLoginFields()
+        if !userData.isEmpty {
+            
+            makeLogin(userData: userData)
+            
             
         } else {
             
@@ -176,11 +182,32 @@ class LoginViewController: UIViewController {
         
     }
     
-    func isValidateLoginFields() -> Bool {
+    func makeLogin(userData:[String:String]) {
+        let data = try? JSONSerialization.data(withJSONObject: userData)
+        api.execute(model: LoginResponse.self,
+                    method: "POST",
+                    headers: ["Content-Type":"application/json","Authorization":"Bearer "], body: data , endPoint: "/login") { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                if let token = response.token {
+                    print(token)
+                } else {
+                    self.showAlert(title: "Login ou senha incorretos")
+                }
+            case .failure( _):
+                self.showAlert(title: "Ops! ocorreu um erro, tente novamente.")
+
+            }
+            
+        }
+    }
+    
+    func isValidateLoginFields() -> [String:String] {
         
-        guard let user = loginTextFiled.text, !user.isEmpty, let pass = passWordTextFiled.text, !pass.isEmpty else { return false }
+        guard let user = loginTextFiled.text, !user.isEmpty, let pass = passWordTextFiled.text, !pass.isEmpty else { return [:] }
         
-        return true
+        return ["username":user,"password":pass]
     }
     
     func showAlert(title: String) {
