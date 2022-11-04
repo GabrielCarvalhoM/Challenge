@@ -31,6 +31,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
-
+    func applicationWillTerminate(_ application: UIApplication) {
+        
+        guard !UserDefaults.standard.bool(forKey: "logSwitch") else { return }
+        let keyC = KeychainManager()
+        try? keyC.deleteToken(identifier: "teste")
+    }
+    
 }
 

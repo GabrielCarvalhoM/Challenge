@@ -8,11 +8,12 @@
 import UIKit
 
 class LoginViewController: UIViewController {
-    
+
     var api = Api()
+    var keyC = KeychainManager()
+    var cars = CarsListTableViewController()
     
-    
-       lazy var backGroundImage: UIImageView = {
+      lazy var backGroundImage: UIImageView = {
            
            let image = UIImageView()
            image.translatesAutoresizingMaskIntoConstraints = false
@@ -96,11 +97,10 @@ class LoginViewController: UIViewController {
     
     lazy var stayLogSwitch: UISwitch = {
        
-        let staySwtich = UISwitch()
-        staySwtich.translatesAutoresizingMaskIntoConstraints = false
+        let staySwitch = UISwitch()
+        staySwitch.translatesAutoresizingMaskIntoConstraints = false
         
-        
-        return staySwtich
+        return staySwitch
     }()
     
     lazy var loginButton: UIButton = {
@@ -149,6 +149,8 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
 
         view.addSubview(backGroundImage)
         view.addSubview(backView)
@@ -166,13 +168,13 @@ class LoginViewController: UIViewController {
         MakeConstraints()
     }
     
-    @objc private func didTapLoginButton() {
+   @objc func didTapLoginButton() {
         
         let userData = isValidateLoginFields()
         if !userData.isEmpty {
             
             makeLogin(userData: userData)
-            
+           
             
         } else {
             
@@ -182,16 +184,28 @@ class LoginViewController: UIViewController {
         
     }
     
-    func makeLogin(userData:[String:String]) {
+  func makeLogin(userData:[String:String]) {
         let data = try? JSONSerialization.data(withJSONObject: userData)
         api.execute(model: LoginResponse.self,
                     method: "POST",
-                    headers: ["Content-Type":"application/json","Authorization":"Bearer "], body: data , endPoint: "/login") { [weak self] result in
+                    headers: ["Content-Type":"application/json"],
+                    body: data,
+                    url: "https://carros-springboot.herokuapp.com/api/v2/login") { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let response):
                 if let token = response.token {
-                    print(token)
+                    let acToken = Data(token.utf8)
+
+                    do {
+                        try self.keyC.saveToken(token: acToken, identifier: "teste")
+                        self.navigationController?.pushViewController(self.cars, animated: true)
+                        UserDefaults.standard.set(self.stayLogSwitch.isOn, forKey: "logSwitch")
+                        
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                    
                 } else {
                     self.showAlert(title: "Login ou senha incorretos")
                 }
@@ -203,7 +217,7 @@ class LoginViewController: UIViewController {
         }
     }
     
-    func isValidateLoginFields() -> [String:String] {
+   func isValidateLoginFields() -> [String:String] {
         
         guard let user = loginTextFiled.text, !user.isEmpty, let pass = passWordTextFiled.text, !pass.isEmpty else { return [:] }
         
@@ -236,8 +250,8 @@ class LoginViewController: UIViewController {
             
             self.loginTextFiled.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             self.loginTextFiled.topAnchor.constraint(equalTo: self.loginLabel.bottomAnchor, constant: 10),
-            self.loginTextFiled.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
-            self.loginTextFiled.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
+            self.loginTextFiled.leadingAnchor.constraint(equalTo: self.backView.leadingAnchor, constant: 8),
+            self.loginTextFiled.trailingAnchor.constraint(equalTo: self.backView.trailingAnchor, constant: -8),
             
             self.passwordLabel.leadingAnchor.constraint(equalTo: self.passWordTextFiled.leadingAnchor),
             self.passwordLabel.topAnchor.constraint(equalTo: self.loginTextFiled.bottomAnchor, constant: 10),
@@ -266,7 +280,7 @@ class LoginViewController: UIViewController {
             self.backView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             self.backView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
             self.backView.topAnchor.constraint(equalTo: view.topAnchor, constant: 200),
-            self.backView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -200),
+            self.backView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -170),
             
             self.backView2.topAnchor.constraint(equalTo: self.backView.topAnchor),
             self.backView2.leadingAnchor.constraint(equalTo: self.backView.leadingAnchor),

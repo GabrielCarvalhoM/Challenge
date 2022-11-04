@@ -18,12 +18,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
-        let controller = LoginViewController()
-        let navigation = UINavigationController(rootViewController: controller)
         
-        window.rootViewController = navigation
-        window.makeKeyAndVisible()
         self.window = window
+        
+        logedCheck()
+    }
+    
+    func logedCheck() {
+        let keyC = KeychainManager()
+        var controller: UIViewController
+        
+        
+        if let _ = try? keyC.getToken(identifier: "teste") {
+            controller = CarsListTableViewController()
+            
+        } else {
+            controller = LoginViewController()
+            
+        }
+        
+        let navigation = UINavigationController(rootViewController: controller)
+        window?.rootViewController = navigation
+        window?.makeKeyAndVisible()
+
     }
     
 }

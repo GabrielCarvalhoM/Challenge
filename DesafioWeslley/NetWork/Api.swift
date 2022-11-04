@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 enum Urls {
     static let base = "https://carros-springboot.herokuapp.com/api/v2"
@@ -13,9 +14,9 @@ enum Urls {
 
 final class Api {
     
-    func execute<T:Codable>(model:T.Type, method: String, headers: [String:String], body: Data?, endPoint: String, completion: @escaping (Result<T,Error>) -> Void) {
+    func execute<T:Codable>(model:T.Type, method: String, headers: [String:String], body: Data?, url: String, completion: @escaping (Result<T,Error>) -> Void) {
         
-        guard let url = URL(string: Urls.base + endPoint) else { return }
+        guard let url = URL(string: url) else { return }
         
         var request = URLRequest(url: url)
         
@@ -47,4 +48,22 @@ final class Api {
         task.resume()
     }
     
+    
+    func fetchImage(url: String, completion: @escaping (UIImage?) -> Void ) {
+     
+        guard let url = URL(string: url) else {
+            completion(nil)
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil else {
+                completion(nil)
+                return }
+                let image = UIImage(data: data)
+                    completion(image)
+        }.resume()
+    }
+    
 }
+
