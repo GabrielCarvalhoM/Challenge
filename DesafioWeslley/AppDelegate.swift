@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         guard !UserDefaults.standard.bool(forKey: "logSwitch") else { return }
         let keyC = KeychainManager()
-        try? keyC.deleteToken(identifier: "teste")
+        try? keyC.deleteToken(identifier: "accesToken")
     }
     
 }

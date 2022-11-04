@@ -31,14 +31,14 @@ class CarsListTableViewController: UIViewController {
         
         navigationItem.hidesBackButton = true
         navigationItem.title = "Carros"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(logout))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: .done, target: self, action: #selector(logout))
         
         tableView.dataSource = self
         tableView.delegate = self
         view.addSubview(tableView)
         
         
-        let token = try! keyC.getToken(identifier: "teste")
+        let token = try! keyC.getToken(identifier: "accessToken")
 
         api.execute(model: [CarModel].self,
                     method: "GET",
@@ -60,13 +60,13 @@ class CarsListTableViewController: UIViewController {
             
         }
         
-        cts()
+        makeConstraints()
         
     }
     
     @objc func logout() {
         
-        try? keyC.deleteToken(identifier: "teste")
+        try? keyC.deleteToken(identifier: "accessToken")
         
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene, let sceneDelegate = windowScene.delegate as? SceneDelegate
         else {
@@ -78,7 +78,7 @@ class CarsListTableViewController: UIViewController {
         
     }
     
-    func cts() {
+    func makeConstraints() {
         NSLayoutConstraint.activate([
             
             tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),

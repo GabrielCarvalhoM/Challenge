@@ -8,53 +8,53 @@
 import UIKit
 
 class LoginViewController: UIViewController {
-
+    
     var api = Api()
     var keyC = KeychainManager()
     var cars = CarsListTableViewController()
     
-      lazy var backGroundImage: UIImageView = {
-           
-           let image = UIImageView()
-           image.translatesAutoresizingMaskIntoConstraints = false
-           image.image = UIImage(named: "BackGroundImage")
-           
-           return image
-       }()
-       
-       lazy var carLabel: UILabel = {
-          
-           let label = UILabel()
-           label.translatesAutoresizingMaskIntoConstraints = false
-           label.text = "Carros"
-           label.font = .systemFont(ofSize: 25)
-           label.textColor = .white
-           
-           return label
-       }()
-       
-      lazy var loginLabel: UILabel = {
-          
-           let label = UILabel()
-           label.translatesAutoresizingMaskIntoConstraints = false
-           label.text = "Login"
-           label.font = .systemFont(ofSize: 20)
-           label.textColor = .gray
-           
-           return label
-       }()
+    lazy var backGroundImage: UIImageView = {
+        
+        let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.image = UIImage(named: "BackGroundImage")
+        
+        return image
+    }()
+    
+    lazy var carLabel: UILabel = {
+        
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Carros"
+        label.font = .systemFont(ofSize: 25)
+        label.textColor = .white
+        
+        return label
+    }()
+    
+    lazy var loginLabel: UILabel = {
+        
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Login"
+        label.font = .systemFont(ofSize: 20)
+        label.textColor = .gray
+        
+        return label
+    }()
     
     lazy var passwordLabel: UILabel = {
         
-         let label = UILabel()
-         label.translatesAutoresizingMaskIntoConstraints = false
-         label.text = "Senha"
-         label.font = .systemFont(ofSize: 20)
-         label.textColor = .gray
-         
-         return label
-     }()
-
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Senha"
+        label.font = .systemFont(ofSize: 20)
+        label.textColor = .gray
+        
+        return label
+    }()
+    
     
     lazy var loginTextFiled: UITextField = {
         
@@ -64,11 +64,11 @@ class LoginViewController: UIViewController {
         text.placeholder = "Digite o login"
         text.backgroundColor = .white
         text.borderStyle = .roundedRect
-
         
-       return text
+        
+        return text
     }()
-
+    
     lazy var passWordTextFiled: UITextField = {
         
         let text = UITextField()
@@ -81,48 +81,72 @@ class LoginViewController: UIViewController {
         
         
         
-       return text
+        return text
     }()
     
     lazy var stayLogLabel: UILabel = {
-       
+        
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "manter logado"
-        label.font = .systemFont(ofSize: 12)
+        label.font = .systemFont(ofSize: 15)
         label.textColor = .systemBlue
         
         return label
     }()
     
     lazy var stayLogSwitch: UISwitch = {
-       
+        
         let staySwitch = UISwitch()
+        staySwitch.onTintColor = UIColor(named: "darkBlue")
         staySwitch.translatesAutoresizingMaskIntoConstraints = false
         
         return staySwitch
     }()
     
     lazy var loginButton: UIButton = {
-       
+        
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         
         button.setTitle("Login", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
-        button.backgroundColor = UIColor(red: 5/255, green: 79/255, blue: 119/255, alpha: 1.0)
-
+        button.backgroundColor = UIColor(named: "darkBlue")
+        
         return button
     }()
     
     lazy var passRemenber: UIButton = {
-       
+        
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         
         button.setTitle("Esqueci a senha", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
+        
+        return button
+    }()
+    
+    lazy var signUpLabel: UILabel = {
+        
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        label.textColor = .gray
+        label.text = "Ainda não tem uma conta? "
+       
+        return label
+    }()
+    
+    lazy var signUpButton: UIButton = {
+       
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        button.setTitle("Cadastre-se", for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
+        
         
         return button
     }()
@@ -164,6 +188,8 @@ class LoginViewController: UIViewController {
         view.addSubview(stayLogSwitch)
         view.addSubview(loginButton)
         view.addSubview(passRemenber)
+        view.addSubview(signUpLabel)
+        view.addSubview(signUpButton)
 
         MakeConstraints()
     }
@@ -198,7 +224,7 @@ class LoginViewController: UIViewController {
                     let acToken = Data(token.utf8)
 
                     do {
-                        try self.keyC.saveToken(token: acToken, identifier: "teste")
+                        try self.keyC.saveToken(token: acToken, identifier: "accessToken")
                         self.navigationController?.pushViewController(self.cars, animated: true)
                         UserDefaults.standard.set(self.stayLogSwitch.isOn, forKey: "logSwitch")
                         
@@ -268,7 +294,7 @@ class LoginViewController: UIViewController {
             self.stayLogSwitch.centerYAnchor.constraint(equalTo: self.stayLogLabel.centerYAnchor),
             
             self.loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            self.loginButton.topAnchor.constraint(equalTo: self.stayLogSwitch.bottomAnchor, constant: 10),
+            self.loginButton.topAnchor.constraint(equalTo: self.stayLogSwitch.bottomAnchor, constant: 15),
             self.loginButton.leadingAnchor.constraint(equalTo: self.loginTextFiled.leadingAnchor),
             self.loginButton.trailingAnchor.constraint(equalTo: self.loginTextFiled.trailingAnchor),
             
@@ -285,7 +311,13 @@ class LoginViewController: UIViewController {
             self.backView2.topAnchor.constraint(equalTo: self.backView.topAnchor),
             self.backView2.leadingAnchor.constraint(equalTo: self.backView.leadingAnchor),
             self.backView2.trailingAnchor.constraint(equalTo: self.backView.trailingAnchor),
-            self.backView2.bottomAnchor.constraint(equalTo: self.backView.topAnchor, constant: 40)
+            self.backView2.bottomAnchor.constraint(equalTo: self.backView.topAnchor, constant: 40),
+            
+            self.signUpLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            self.signUpLabel.topAnchor.constraint(equalTo: self.passRemenber.bottomAnchor, constant: 70),
+            
+            self.signUpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            self.signUpButton.topAnchor.constraint(equalTo: self.signUpLabel.bottomAnchor, constant: 1)
             
             
             

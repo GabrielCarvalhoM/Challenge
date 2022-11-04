@@ -8,9 +8,7 @@
 import Foundation
 import UIKit
 
-enum Urls {
-    static let base = "https://carros-springboot.herokuapp.com/api/v2"
-}
+
 
 final class Api {
     

@@ -29,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         var controller: UIViewController
         
         
-        if let _ = try? keyC.getToken(identifier: "teste") {
+        if let _ = try? keyC.getToken(identifier: "accessToken") {
             controller = CarsListTableViewController()
             
         } else {
