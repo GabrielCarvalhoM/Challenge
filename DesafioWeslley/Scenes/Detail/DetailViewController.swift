@@ -9,9 +9,10 @@ import UIKit
 
 class DetailViewController: UIViewController {
     
+    // MARK: Componentes de view ------------------
+    
     let car: CarModel
     var api = Api()
-
     
     lazy var carImage: UIImageView = {
         
@@ -35,6 +36,7 @@ class DetailViewController: UIViewController {
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
         label.text = "Modelo"
         label.textColor = .red
         
@@ -56,11 +58,34 @@ class DetailViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
         label.textAlignment = .center
         label.text = " "
         
         return label
     }()
+    
+    lazy var typeCarLabel: UILabel = {
+       
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Categoria"
+        label.textColor = .red
+        
+        return label
+    }()
+    
+    lazy var typeCarCategory: UILabel = {
+       
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.text = " "
+        
+        return label
+    }()
+    
+    // MARK: Lógica ------------------
     
     init(car: CarModel) {
         
@@ -93,16 +118,21 @@ class DetailViewController: UIViewController {
         
         self.carNameLabel.text = car.nome
         self.carDescription.text = car.descricao
+        self.typeCarCategory.text = car.tipo
 
         view.addSubview(modelLabel)
         view.addSubview(carImage)
         view.addSubview(carNameLabel)
         view.addSubview(descriptionLabel)
         view.addSubview(carDescription)
+        view.addSubview(typeCarLabel)
+        view.addSubview(typeCarCategory)
         
         makeConstraints()
     }
     
+    // MARK: Constraints ------------------
+        
         func makeConstraints() {
       
       NSLayoutConstraint.activate([
@@ -119,12 +149,19 @@ class DetailViewController: UIViewController {
         self.carNameLabel.topAnchor.constraint(equalTo: self.modelLabel.bottomAnchor, constant: 10),
         
         self.descriptionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        self.descriptionLabel.topAnchor.constraint(equalTo: self.carNameLabel.bottomAnchor, constant: 20),
+        self.descriptionLabel.topAnchor.constraint(equalTo: self.carNameLabel.bottomAnchor, constant: 50),
         
         self.carDescription.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         self.carDescription.topAnchor.constraint(equalTo: self.descriptionLabel.bottomAnchor, constant: 10),
         self.carDescription.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 5),
-        self.carDescription.trailingAnchor.constraint(greaterThanOrEqualTo: view.trailingAnchor, constant: 5)
+        self.carDescription.trailingAnchor.constraint(greaterThanOrEqualTo: view.trailingAnchor, constant: 5),
+        
+        self.typeCarLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        self.typeCarLabel.topAnchor.constraint(equalTo: self.carDescription.bottomAnchor, constant: 50),
+        
+        self.typeCarCategory.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        self.typeCarCategory.topAnchor.constraint(equalTo: self.typeCarLabel.bottomAnchor, constant: 10)
+    
         
       ])
       

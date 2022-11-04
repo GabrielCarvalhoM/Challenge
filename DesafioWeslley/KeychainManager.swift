@@ -9,6 +9,9 @@ import UIKit
 
 final class KeychainManager {
     
+    // MARK: Usei keyChain para o accessToken devido ser uma informação mais sensivel,
+    // MARK: com o keyChain conseguimos trata-lo com mais segurança, diferente do userDefault ou CoreData. -
+    
     enum KeychainError: LocalizedError {
         case itemNotFound
         case duplicateItem

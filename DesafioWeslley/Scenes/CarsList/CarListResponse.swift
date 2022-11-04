@@ -7,6 +7,8 @@
 
 import UIKit
 
+//MARK: Aqui precisei colocar os 4 últimos como opcionais pois em alguns casos retornavam null, para o caso das imagens coloquei uma para os casos onde ela estivesse null no GET.
+
 struct CarModel: Codable {
     
     let id: Int
@@ -17,7 +19,6 @@ struct CarModel: Codable {
     let urlVideo: URL?
     let latitude: String?
     let longitude: String?
-    
     
 }
 

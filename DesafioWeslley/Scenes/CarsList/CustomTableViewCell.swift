@@ -9,7 +9,9 @@ import UIKit
 
 class CustomTableViewCell: UITableViewCell {
     
-    lazy var label: UILabel = {
+    // MARK: Componentes de view ------------------
+    
+    lazy var carNameLabel: UILabel = {
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -19,26 +21,24 @@ class CustomTableViewCell: UITableViewCell {
         return label
     }()
 
-    lazy var image: UIImageView = {
+    lazy var carImage: UIImageView = {
        
         let image = UIImageView()
         image.contentMode = .scaleAspectFit
         image.translatesAutoresizingMaskIntoConstraints = false
-     
         
         return image
     }()
-
     
+    // MARK: Lógica ------------------
     
     static let identifier = "CustomCell"
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        
-        contentView.addSubview(label)
-        contentView.addSubview(image)
+        contentView.addSubview(carNameLabel)
+        contentView.addSubview(carImage)
         
         cts()
         
@@ -48,17 +48,20 @@ class CustomTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    // MARK: constraints ------------------
+    
     func cts() {
         
         NSLayoutConstraint.activate([
         
-            self.label.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            self.label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            self.carNameLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            self.carNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
 
-            self.image.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            self.image.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
-            self.image.bottomAnchor.constraint(equalTo: self.label.topAnchor, constant: -15),
-            self.image.widthAnchor.constraint(equalToConstant: 200),
+            self.carImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            self.carImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            self.carImage.bottomAnchor.constraint(equalTo: self.carNameLabel.topAnchor, constant: -15),
+            self.carImage.widthAnchor.constraint(equalToConstant: 200),
         ])
         
     }

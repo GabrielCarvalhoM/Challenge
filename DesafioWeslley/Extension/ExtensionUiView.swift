@@ -5,6 +5,8 @@
 //  Created by Gabriel Carvalho on 31/10/22.
 //
 
+// MARK: Extesion para UIView apenas para conseguir arredondar cada borda individualmente de duas das minhas views na tela de login de forma mais fácil.
+
 import UIKit
 
 extension UIView {

@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+// MARK: Chamada Api genérica para conseguir realizar tanto o Post do login quanto o Get das informações da Api reutilizando a mesma função. -
 
 
 final class Api {
@@ -46,6 +47,9 @@ final class Api {
         task.resume()
     }
     
+    // MARK: Função apenas para chamada das imagens, não consegui fazer todas as adaptações necessárias na função acima para que ela servisse para as imagens
+    // MARK: Alem do tipo UIImage/UIImageView não ser nativamente conformado com decodable, então fiz dessa forma e chamei direto na customCell ja passando o
+    // MARK: Retorno dela dentro da propriedade Image na minha Célula usando o cellForRowAt
     
     func fetchImage(url: String, completion: @escaping (UIImage?) -> Void ) {
      

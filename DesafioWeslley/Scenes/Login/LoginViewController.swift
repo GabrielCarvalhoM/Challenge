@@ -9,9 +9,13 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
+    // MARK: Instancias -
+
     var api = Api()
     var keyC = KeychainManager()
     var cars = CarsListTableViewController()
+    
+    // MARK: Componentes de view -
     
     lazy var backGroundImage: UIImageView = {
         
@@ -65,7 +69,6 @@ class LoginViewController: UIViewController {
         text.backgroundColor = .white
         text.borderStyle = .roundedRect
         
-        
         return text
     }()
     
@@ -79,12 +82,10 @@ class LoginViewController: UIViewController {
         text.isSecureTextEntry = true
         text.borderStyle = .roundedRect
         
-        
-        
         return text
     }()
     
-    lazy var stayLogLabel: UILabel = {
+    lazy var keepLoggedLabel: UILabel = {
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -95,7 +96,7 @@ class LoginViewController: UIViewController {
         return label
     }()
     
-    lazy var stayLogSwitch: UISwitch = {
+    lazy var keepLoggedSwitch: UISwitch = {
         
         let staySwitch = UISwitch()
         staySwitch.onTintColor = UIColor(named: "darkBlue")
@@ -117,7 +118,7 @@ class LoginViewController: UIViewController {
         return button
     }()
     
-    lazy var passRemenber: UIButton = {
+    lazy var rememberPasswordButton: UIButton = {
         
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -151,7 +152,7 @@ class LoginViewController: UIViewController {
         return button
     }()
     
-    lazy var backView: UIView = {
+    lazy var backGroundWhiteView: UIView = {
         
         let viiew = UIView()
         viiew.translatesAutoresizingMaskIntoConstraints = false
@@ -161,7 +162,7 @@ class LoginViewController: UIViewController {
        return viiew
     }()
     
-    lazy var backView2: UIView = {
+    lazy var backGroundGrayView: UIView = {
         
         let viiew = UIView()
         viiew.translatesAutoresizingMaskIntoConstraints = false
@@ -171,23 +172,26 @@ class LoginViewController: UIViewController {
        return viiew
     }()
     
+    // MARK: Lógica -
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
 
         view.addSubview(backGroundImage)
-        view.addSubview(backView)
-        view.addSubview(backView2)
+        view.addSubview(backGroundWhiteView)
+        view.addSubview(backGroundGrayView)
         view.addSubview(carLabel)
         view.addSubview(loginLabel)
         view.addSubview(loginTextFiled)
         view.addSubview(passwordLabel)
         view.addSubview(passWordTextFiled)
-        view.addSubview(stayLogLabel)
-        view.addSubview(stayLogSwitch)
+        view.addSubview(keepLoggedLabel)
+        view.addSubview(keepLoggedSwitch)
         view.addSubview(loginButton)
-        view.addSubview(passRemenber)
+        view.addSubview(rememberPasswordButton)
         view.addSubview(signUpLabel)
         view.addSubview(signUpButton)
 
@@ -226,7 +230,7 @@ class LoginViewController: UIViewController {
                     do {
                         try self.keyC.saveToken(token: acToken, identifier: "accessToken")
                         self.navigationController?.pushViewController(self.cars, animated: true)
-                        UserDefaults.standard.set(self.stayLogSwitch.isOn, forKey: "logSwitch")
+                        UserDefaults.standard.set(self.keepLoggedSwitch.isOn, forKey: "logSwitch")
                         
                     } catch {
                         print(error.localizedDescription)
@@ -257,6 +261,8 @@ class LoginViewController: UIViewController {
         self.present (alertController, animated: true, completion: nil)
     }
     
+    // MARK: Constraints -
+    
     func MakeConstraints() {
         
         NSLayoutConstraint.activate([
@@ -269,15 +275,15 @@ class LoginViewController: UIViewController {
             self.backGroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
          
             self.carLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            self.carLabel.centerYAnchor.constraint(equalTo: self.backView2.centerYAnchor),
+            self.carLabel.centerYAnchor.constraint(equalTo: self.backGroundGrayView.centerYAnchor),
             
             self.loginLabel.leadingAnchor.constraint(equalTo: self.loginTextFiled.leadingAnchor),
             self.loginLabel.topAnchor.constraint(equalTo: self.carLabel.bottomAnchor, constant: 30),
             
             self.loginTextFiled.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             self.loginTextFiled.topAnchor.constraint(equalTo: self.loginLabel.bottomAnchor, constant: 10),
-            self.loginTextFiled.leadingAnchor.constraint(equalTo: self.backView.leadingAnchor, constant: 8),
-            self.loginTextFiled.trailingAnchor.constraint(equalTo: self.backView.trailingAnchor, constant: -8),
+            self.loginTextFiled.leadingAnchor.constraint(equalTo: self.backGroundWhiteView.leadingAnchor, constant: 8),
+            self.loginTextFiled.trailingAnchor.constraint(equalTo: self.backGroundWhiteView.trailingAnchor, constant: -8),
             
             self.passwordLabel.leadingAnchor.constraint(equalTo: self.passWordTextFiled.leadingAnchor),
             self.passwordLabel.topAnchor.constraint(equalTo: self.loginTextFiled.bottomAnchor, constant: 10),
@@ -287,39 +293,36 @@ class LoginViewController: UIViewController {
             self.passWordTextFiled.leadingAnchor.constraint(equalTo: self.loginTextFiled.leadingAnchor),
             self.passWordTextFiled.trailingAnchor.constraint(equalTo: self.loginTextFiled.trailingAnchor),
             
-            self.stayLogLabel.leadingAnchor.constraint(equalTo: self.passWordTextFiled.leadingAnchor),
-            self.stayLogLabel.topAnchor.constraint(equalTo: self.passWordTextFiled.bottomAnchor, constant: 40),
+            self.keepLoggedLabel.leadingAnchor.constraint(equalTo: self.passWordTextFiled.leadingAnchor),
+            self.keepLoggedLabel.topAnchor.constraint(equalTo: self.passWordTextFiled.bottomAnchor, constant: 40),
             
-            self.stayLogSwitch.leadingAnchor.constraint(equalTo: self.stayLogLabel.trailingAnchor, constant: 5),
-            self.stayLogSwitch.centerYAnchor.constraint(equalTo: self.stayLogLabel.centerYAnchor),
+            self.keepLoggedSwitch.leadingAnchor.constraint(equalTo: self.keepLoggedLabel.trailingAnchor, constant: 5),
+            self.keepLoggedSwitch.centerYAnchor.constraint(equalTo: self.keepLoggedLabel.centerYAnchor),
             
             self.loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            self.loginButton.topAnchor.constraint(equalTo: self.stayLogSwitch.bottomAnchor, constant: 15),
+            self.loginButton.topAnchor.constraint(equalTo: self.keepLoggedSwitch.bottomAnchor, constant: 15),
             self.loginButton.leadingAnchor.constraint(equalTo: self.loginTextFiled.leadingAnchor),
             self.loginButton.trailingAnchor.constraint(equalTo: self.loginTextFiled.trailingAnchor),
             
-            self.passRemenber.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            self.passRemenber.topAnchor.constraint(equalTo: self.loginButton.bottomAnchor, constant: 10),
+            self.rememberPasswordButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            self.rememberPasswordButton.topAnchor.constraint(equalTo: self.loginButton.bottomAnchor, constant: 10),
             
-            self.backView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            self.backView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            self.backView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
-            self.backView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
-            self.backView.topAnchor.constraint(equalTo: view.topAnchor, constant: 200),
-            self.backView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -170),
+            self.backGroundWhiteView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            self.backGroundWhiteView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+            self.backGroundWhiteView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
+            self.backGroundWhiteView.topAnchor.constraint(equalTo: view.centerYAnchor, constant: -260),
+            self.backGroundWhiteView.bottomAnchor.constraint(equalTo: self.signUpButton.bottomAnchor, constant: 20),
             
-            self.backView2.topAnchor.constraint(equalTo: self.backView.topAnchor),
-            self.backView2.leadingAnchor.constraint(equalTo: self.backView.leadingAnchor),
-            self.backView2.trailingAnchor.constraint(equalTo: self.backView.trailingAnchor),
-            self.backView2.bottomAnchor.constraint(equalTo: self.backView.topAnchor, constant: 40),
+            self.backGroundGrayView.topAnchor.constraint(equalTo: self.backGroundWhiteView.topAnchor),
+            self.backGroundGrayView.leadingAnchor.constraint(equalTo: self.backGroundWhiteView.leadingAnchor),
+            self.backGroundGrayView.trailingAnchor.constraint(equalTo: self.backGroundWhiteView.trailingAnchor),
+            self.backGroundGrayView.bottomAnchor.constraint(equalTo: self.backGroundWhiteView.topAnchor, constant: 40),
             
             self.signUpLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            self.signUpLabel.topAnchor.constraint(equalTo: self.passRemenber.bottomAnchor, constant: 70),
+            self.signUpLabel.topAnchor.constraint(equalTo: self.rememberPasswordButton.bottomAnchor, constant: 70),
             
             self.signUpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             self.signUpButton.topAnchor.constraint(equalTo: self.signUpLabel.bottomAnchor, constant: 1)
-            
-            
             
         ])
         

@@ -7,6 +7,8 @@
 
 import Foundation
 
+//MARK: Optei por receber apenas o token aqui pois foi a única coisa que utilizaria desse response
+
 struct LoginResponse: Codable {
     
     let token: String?
